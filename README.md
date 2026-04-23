@@ -120,7 +120,7 @@ MIT License — free to use, modify and distribute.
 ## 👤 Author
 
 **Your Name**
-- GitHub: [@YOUR_USERNAME](https://github.com/YOUR_USERNAME)
+- GitHub: [https://github.com/duaezainab12/](https://github.com/YOUR_USERNAME)
 
 ---
 
