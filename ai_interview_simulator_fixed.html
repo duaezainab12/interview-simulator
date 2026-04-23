@@ -1,0 +1,399 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif}
+h1,h2,h3{font-family:'Playfair Display',serif}
+
+#app{max-width:660px;margin:0 auto;padding:1.5rem 1rem}
+
+.hero{text-align:center;padding:1.5rem 0 1.25rem;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:1.5rem}
+.hero h1{font-size:26px;font-weight:600;color:var(--color-text-primary);letter-spacing:-0.4px}
+.hero p{font-size:13px;color:var(--color-text-secondary);margin-top:5px}
+.ai-badge{display:inline-flex;align-items:center;gap:5px;background:var(--color-background-success);color:var(--color-text-success);font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;margin-bottom:10px}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--color-text-success);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+
+.section-label{font-size:11px;font-weight:500;color:var(--color-text-secondary);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:8px}
+
+.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:1rem}
+.config-card{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem;cursor:pointer;transition:all 0.15s;position:relative}
+.config-card:hover{border-color:var(--color-border-primary)}
+.config-card.active{border:1.5px solid var(--color-border-info);background:var(--color-background-info)}
+.config-card h3{font-size:13px;font-weight:500;color:var(--color-text-primary);font-family:'DM Sans',sans-serif;margin-top:6px}
+.config-card p{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.card-icon{font-size:18px}
+.check{position:absolute;top:8px;right:8px;width:16px;height:16px;border-radius:50%;background:var(--color-background-info);border:1.5px solid var(--color-border-info);display:none;align-items:center;justify-content:center}
+.check-inner{width:7px;height:7px;border-radius:50%;background:var(--color-text-info)}
+.active .check{display:flex}
+
+.level-row{display:flex;gap:8px;margin-bottom:1rem}
+.lvl-btn{flex:1;padding:8px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);border-radius:var(--border-radius-md);font-size:12px;font-weight:500;cursor:pointer;color:var(--color-text-secondary);font-family:'DM Sans',sans-serif;transition:all 0.15s}
+.lvl-btn:hover{background:var(--color-background-primary);color:var(--color-text-primary)}
+.lvl-btn.active{background:var(--color-background-info);border:1.5px solid var(--color-border-info);color:var(--color-text-info)}
+
+.start-btn{width:100%;padding:13px;background:var(--color-background-info);color:var(--color-text-info);border:1.5px solid var(--color-border-info);border-radius:var(--border-radius-lg);font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity 0.15s}
+.start-btn:hover{opacity:0.8}
+.start-btn:active{transform:scale(0.99)}
+
+.interview-panel{display:none}
+.session-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.session-title{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.session-sub{font-size:11px;color:var(--color-text-secondary)}
+.q-counter{font-size:12px;color:var(--color-text-secondary)}
+
+.progress-wrap{background:var(--color-background-secondary);border-radius:20px;height:4px;margin-bottom:1.25rem;overflow:hidden;border:0.5px solid var(--color-border-tertiary)}
+.progress-fill{height:4px;background:var(--color-background-info);border-radius:20px;transition:width 0.4s ease}
+
+.question-card{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:1rem}
+.q-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.q-num{font-size:11px;color:var(--color-text-secondary)}
+.q-tag{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500}
+.tag-behavioral,.tag-mixed{background:var(--color-background-info);color:var(--color-text-info)}
+.tag-technical{background:var(--color-background-danger);color:var(--color-text-danger)}
+.tag-situational{background:var(--color-background-success);color:var(--color-text-success)}
+.tag-cultural,.tag-culture{background:var(--color-background-warning);color:var(--color-text-warning)}
+.question-text{font-size:15px;color:var(--color-text-primary);line-height:1.6;font-family:'DM Sans',sans-serif}
+
+.answer-area{width:100%;min-height:110px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:12px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--color-text-primary);background:var(--color-background-primary);resize:vertical;line-height:1.6}
+.answer-area:focus{outline:none;border-color:var(--color-border-primary)}
+.answer-area::placeholder{color:var(--color-text-tertiary)}
+
+.tips-row{display:flex;gap:7px;margin:9px 0;flex-wrap:wrap;align-items:center}
+.tip-label{font-size:11px;color:var(--color-text-secondary)}
+.tip-chip{font-size:11px;padding:4px 10px;background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:20px;cursor:pointer;transition:background 0.1s}
+.tip-chip:hover{background:var(--color-background-primary);color:var(--color-text-primary)}
+
+.action-row{display:flex;gap:8px;margin-top:10px}
+.btn-primary{flex:2;padding:11px;background:var(--color-background-info);color:var(--color-text-info);border:1.5px solid var(--color-border-info);border-radius:var(--border-radius-md);font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity 0.15s}
+.btn-primary:hover{opacity:0.8}
+.btn-secondary{flex:1;padding:11px;background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.15s}
+.btn-secondary:hover{background:var(--color-background-primary);color:var(--color-text-primary)}
+
+.error-msg{background:var(--color-background-danger);color:var(--color-text-danger);padding:9px 12px;border-radius:var(--border-radius-md);font-size:12px;margin-top:7px;display:none}
+
+.feedback-box{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-top:10px;display:none}
+.fb-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.fb-score-num{font-size:24px;font-weight:600;font-family:'Playfair Display',serif;color:var(--color-text-primary)}
+.fb-score-sub{font-size:11px;color:var(--color-text-secondary)}
+.stars{display:flex;gap:3px;margin-left:auto}
+.fb-label{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500}
+.fb-text{font-size:13px;color:var(--color-text-secondary);line-height:1.65}
+.fb-text b{color:var(--color-text-primary);font-weight:500}
+.fb-actions{display:flex;gap:8px;margin-top:12px}
+
+.loader-wrap{text-align:center;padding:18px 0;display:none}
+.loader-ring{width:24px;height:24px;border:2px solid var(--color-border-secondary);border-top-color:var(--color-text-info);border-radius:50%;animation:spin 0.7s linear infinite;margin:0 auto 7px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader-txt{font-size:12px;color:var(--color-text-secondary)}
+
+.results-panel{display:none}
+.results-top{text-align:center;padding:1.25rem 0;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:1.25rem}
+.big-score{font-size:52px;font-family:'Playfair Display',serif;font-weight:600;color:var(--color-text-primary)}
+.big-sub{font-size:13px;color:var(--color-text-secondary);margin-top:4px}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.25rem}
+.stat-card{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:12px;text-align:center}
+.stat-val{font-size:20px;font-weight:500;color:var(--color-text-primary);font-family:'Playfair Display',serif}
+.stat-lbl{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.breakdown{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:1rem}
+.bd-item{padding:11px 14px;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-between}
+.bd-item:last-child{border-bottom:none}
+.bd-q{font-size:12px;color:var(--color-text-primary);flex:1;padding-right:10px;line-height:1.4}
+.bd-score{font-size:12px;font-weight:500;padding:3px 9px;border-radius:20px}
+.s-high{background:var(--color-background-success);color:var(--color-text-success)}
+.s-mid{background:var(--color-background-warning);color:var(--color-text-warning)}
+.s-low{background:var(--color-background-danger);color:var(--color-text-danger)}
+.s-skip{background:var(--color-background-secondary);color:var(--color-text-tertiary);border:0.5px solid var(--color-border-tertiary)}
+.restart-btn{width:100%;padding:12px;border:0.5px solid var(--color-border-primary);background:transparent;color:var(--color-text-primary);border-radius:var(--border-radius-lg);font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.15s}
+.restart-btn:hover{background:var(--color-background-secondary)}
+</style>
+
+<div id="app">
+
+<div id="setup-panel">
+  <div class="hero">
+    <div class="ai-badge"><span class="pulse"></span>AI Powered</div>
+    <h1>Interview Simulator</h1>
+    <p>Practice with a real-time AI interviewer and get instant scored feedback</p>
+  </div>
+
+  <div class="section-label">Role type</div>
+  <div class="config-grid" id="role-grid">
+    <div class="config-card active" data-val="Software Engineer" onclick="sel(this,'role-grid')">
+      <div class="check"><div class="check-inner"></div></div>
+      <div class="card-icon">💻</div><h3>Software Engineer</h3><p>Technical & problem-solving</p>
+    </div>
+    <div class="config-card" data-val="Product Manager" onclick="sel(this,'role-grid')">
+      <div class="check"><div class="check-inner"></div></div>
+      <div class="card-icon">📊</div><h3>Product Manager</h3><p>Strategy & leadership</p>
+    </div>
+    <div class="config-card" data-val="Data Scientist" onclick="sel(this,'role-grid')">
+      <div class="check"><div class="check-inner"></div></div>
+      <div class="card-icon">🔬</div><h3>Data Scientist</h3><p>Analytics & modeling</p>
+    </div>
+    <div class="config-card" data-val="UX Designer" onclick="sel(this,'role-grid')">
+      <div class="check"><div class="check-inner"></div></div>
+      <div class="card-icon">🎨</div><h3>UX Designer</h3><p>Design & user research</p>
+    </div>
+  </div>
+
+  <div class="section-label">Experience level</div>
+  <div class="level-row" id="level-row">
+    <button class="lvl-btn active" data-val="Junior (0-2 yrs)" onclick="selLvl(this)">Junior</button>
+    <button class="lvl-btn" data-val="Mid-level (2-5 yrs)" onclick="selLvl(this)">Mid-level</button>
+    <button class="lvl-btn" data-val="Senior (5+ yrs)" onclick="selLvl(this)">Senior</button>
+  </div>
+
+  <div class="section-label">Interview focus</div>
+  <div class="config-grid" id="focus-grid">
+    <div class="config-card active" data-val="Behavioral" onclick="sel(this,'focus-grid')">
+      <div class="check"><div class="check-inner"></div></div>
+      <div class="card-icon">🗣️</div><h3>Behavioral</h3><p>STAR method, soft skills</p>
+    </div>
+    <div class="config-card" data-val="Technical" onclick="sel(this,'focus-grid')">
+      <div class="check"><div class="check-inner"></div></div>
+      <div class="card-icon">⚙️</div><h3>Technical</h3><p>Knowledge & concepts</p>
+    </div>
+    <div class="config-card" data-val="Mixed" onclick="sel(this,'focus-grid')">
+      <div class="check"><div class="check-inner"></div></div>
+      <div class="card-icon">🔀</div><h3>Mixed</h3><p>Full interview simulation</p>
+    </div>
+    <div class="config-card" data-val="Culture Fit" onclick="sel(this,'focus-grid')">
+      <div class="check"><div class="check-inner"></div></div>
+      <div class="card-icon">🤝</div><h3>Culture Fit</h3><p>Values & teamwork</p>
+    </div>
+  </div>
+
+  <div style="margin-top:1.25rem">
+    <button class="start-btn" onclick="startInterview()">Start Interview Session →</button>
+  </div>
+</div>
+
+<div class="interview-panel" id="interview-panel">
+  <div class="session-header">
+    <div><div class="session-title" id="sess-title">Interview</div><div class="session-sub" id="sess-sub"></div></div>
+    <div class="q-counter" id="q-counter">Question 1 of 5</div>
+  </div>
+  <div class="progress-wrap"><div class="progress-fill" id="prog" style="width:20%"></div></div>
+
+  <div class="loader-wrap" id="q-loader">
+    <div class="loader-ring"></div><div class="loader-txt">Generating question...</div>
+  </div>
+
+  <div id="q-area">
+    <div class="question-card">
+      <div class="q-meta">
+        <span class="q-num" id="q-num">Q1</span>
+        <span class="q-tag tag-behavioral" id="q-tag">Behavioral</span>
+      </div>
+      <div class="question-text" id="q-text">Loading your first question...</div>
+    </div>
+
+    <div class="section-label">Your answer</div>
+    <textarea class="answer-area" id="ans" placeholder="Type your answer here. For behavioral questions try: Situation → Task → Action → Result..."></textarea>
+
+    <div class="tips-row">
+      <span class="tip-label">Tips:</span>
+      <span class="tip-chip" onclick="tip('Use the STAR method: Situation, Task, Action, Result — ')">STAR method</span>
+      <span class="tip-chip" onclick="tip('Include specific metrics and numbers — ')">Be specific</span>
+      <span class="tip-chip" onclick="tip('Show your personal impact and ownership — ')">Show impact</span>
+    </div>
+
+    <div class="action-row">
+      <button class="btn-primary" onclick="submit()">Get AI Feedback →</button>
+      <button class="btn-secondary" onclick="skip()">Skip</button>
+    </div>
+    <div class="error-msg" id="err">Please write an answer before submitting.</div>
+  </div>
+
+  <div class="feedback-box" id="fb-box">
+    <div class="fb-top">
+      <div>
+        <div class="fb-score-sub">Score</div>
+        <div class="fb-score-num" id="fb-score">—</div>
+      </div>
+      <div class="stars" id="fb-stars"></div>
+      <div class="fb-label" id="fb-label" style="background:var(--color-background-info);color:var(--color-text-info)">—</div>
+    </div>
+    <div class="loader-wrap" id="fb-loader" style="text-align:left;padding:6px 0">
+      <div class="loader-ring" style="margin:0 0 5px"></div><div class="loader-txt">Analyzing your answer...</div>
+    </div>
+    <div class="fb-text" id="fb-text"></div>
+    <div class="fb-actions" id="fb-actions" style="opacity:0">
+      <button class="btn-primary" id="next-btn" onclick="next()">Next Question →</button>
+      <button class="btn-secondary" onclick="reanswer()">Re-answer</button>
+    </div>
+  </div>
+</div>
+
+<div class="results-panel" id="results-panel">
+  <div class="results-top">
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:3px">Interview complete</div>
+    <div class="big-score" id="final-score">—</div>
+    <div class="big-sub" id="final-sub"></div>
+  </div>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-val" id="s-answered">0</div><div class="stat-lbl">Answered</div></div>
+    <div class="stat-card"><div class="stat-val" id="s-avg">0.0</div><div class="stat-lbl">Avg score</div></div>
+    <div class="stat-card"><div class="stat-val" id="s-best">0</div><div class="stat-lbl">Best score</div></div>
+  </div>
+  <div class="section-label">Question breakdown</div>
+  <div class="breakdown" id="breakdown"></div>
+  <button class="restart-btn" onclick="restart()">Start a new session</button>
+</div>
+
+</div>
+
+<script>
+const API = "https://api.anthropic.com/v1/messages";
+let cfg = {role:'Software Engineer', level:'Junior (0-2 yrs)', focus:'Behavioral'};
+let questions=[], curQ=0, scores=[], qData=[];
+const TOTAL=5;
+
+function sel(el,gridId){
+  document.querySelectorAll('#'+gridId+' .config-card').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  cfg[gridId==='role-grid'?'role':'focus'] = el.dataset.val;
+}
+function selLvl(el){
+  document.querySelectorAll('#level-row .lvl-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  cfg.level = el.dataset.val;
+}
+function tip(t){
+  const ta=document.getElementById('ans');
+  ta.value = ta.value ? ta.value+'\n'+t : t;
+  ta.focus();
+}
+
+async function startInterview(){
+  document.getElementById('setup-panel').style.display='none';
+  document.getElementById('interview-panel').style.display='block';
+  document.getElementById('sess-title').textContent = cfg.role+' Interview';
+  document.getElementById('sess-sub').textContent = cfg.focus+' · '+cfg.level.split(' ')[0];
+  curQ=0; scores=[]; qData=[]; questions=[];
+  await loadQ();
+}
+
+async function loadQ(){
+  show('q-loader',true); show('fb-box',false); show('err',false);
+  document.getElementById('q-area').style.opacity='0.4';
+  document.getElementById('ans').value='';
+  document.getElementById('q-counter').textContent=`Question ${curQ+1} of ${TOTAL}`;
+  document.getElementById('q-num').textContent=`Q${curQ+1}`;
+  document.getElementById('prog').style.width=((curQ+1)/TOTAL*100)+'%';
+
+  const prev = questions.map(q=>q.text).join(' | ');
+  const prompt = `You are a professional interviewer for a ${cfg.role} role. Generate interview question ${curQ+1} of ${TOTAL} for a ${cfg.level} candidate. Focus: ${cfg.focus}. Previously asked: ${prev||'none'}. Return ONLY valid JSON no markdown: {"question":"...","type":"Behavioral|Technical|Situational|Cultural","difficulty":"Easy|Medium|Hard"}`;
+
+  try{
+    const d = await callAPI(prompt,300);
+    const p = parseJSON(d);
+    questions.push({text:p.question,type:p.type});
+    document.getElementById('q-text').textContent=p.question;
+    const tag=document.getElementById('q-tag');
+    tag.textContent=p.type; tag.className='q-tag tag-'+p.type.toLowerCase();
+  }catch(e){
+    const fallback=[
+      {question:`Describe a challenging project you worked on as a ${cfg.role} and how you handled obstacles.`,type:'Behavioral'},
+      {question:`How do you prioritize competing deadlines and manage your workload effectively?`,type:'Situational'},
+      {question:`What excites you most about working in ${cfg.role} and where do you see yourself growing?`,type:'Cultural'}
+    ][curQ%3];
+    questions.push(fallback);
+    document.getElementById('q-text').textContent=fallback.question;
+    document.getElementById('q-tag').textContent=fallback.type;
+    document.getElementById('q-tag').className='q-tag tag-'+fallback.type.toLowerCase();
+  }
+  show('q-loader',false);
+  document.getElementById('q-area').style.opacity='1';
+}
+
+async function submit(){
+  const ans=document.getElementById('ans').value.trim();
+  if(!ans){show('err',true);return;}
+  show('err',false);
+  show('fb-box',true);
+  show('fb-loader',true);
+  document.getElementById('fb-text').innerHTML='';
+  document.getElementById('fb-actions').style.opacity='0';
+  document.getElementById('fb-score').textContent='—';
+  document.getElementById('fb-stars').innerHTML='';
+
+  const q=questions[curQ];
+  const prompt=`You are an expert interviewer evaluating a ${cfg.role} (${cfg.level}). Question: "${q.text}". Answer: "${ans}". Return ONLY valid JSON no markdown: {"score":7,"label":"Good","strengths":"1-2 sentences","improvements":"1-2 sentences","tip":"one actionable tip"}. Score 1-10. Labels: Weak(1-4) Fair(5-6) Good(7-8) Strong(9-10)`;
+
+  try{
+    const d=await callAPI(prompt,400);
+    const p=parseJSON(d);
+    const sc=Math.min(10,Math.max(1,parseInt(p.score)||5));
+    scores.push(sc); qData.push({q:q.text.substring(0,60)+'...',sc});
+    document.getElementById('fb-score').textContent=sc+'/10';
+    setLabel(sc,p.label);
+    renderStars(sc);
+    document.getElementById('fb-text').innerHTML=`<b>Strengths:</b> ${p.strengths||'Good effort.'}<br><br><b>Areas to improve:</b> ${p.improvements||'Keep practicing.'}<br><br><b>Pro tip:</b> ${p.tip||'Structure answers clearly.'}`;
+  }catch(e){
+    const sc=6; scores.push(sc); qData.push({q:q.text.substring(0,60)+'...',sc});
+    document.getElementById('fb-score').textContent='6/10';
+    setLabel(sc,'Fair'); renderStars(sc);
+    document.getElementById('fb-text').innerHTML=`<b>Feedback:</b> Good effort. Try to include specific examples with measurable outcomes and structure your response clearly.`;
+  }
+  show('fb-loader',false);
+  document.getElementById('fb-actions').style.opacity='1';
+  document.getElementById('next-btn').textContent=curQ+1>=TOTAL?'See Results →':'Next Question →';
+}
+
+function setLabel(sc,lbl){
+  const el=document.getElementById('fb-label');
+  const label=lbl||(sc>=9?'Strong':sc>=7?'Good':sc>=5?'Fair':'Weak');
+  el.textContent=label;
+  if(sc>=7){el.style.background='var(--color-background-success)';el.style.color='var(--color-text-success)'}
+  else if(sc>=5){el.style.background='var(--color-background-warning)';el.style.color='var(--color-text-warning)'}
+  else{el.style.background='var(--color-background-danger)';el.style.color='var(--color-text-danger)'}
+}
+function renderStars(sc){
+  const filled=Math.round(sc/2);
+  document.getElementById('fb-stars').innerHTML=Array.from({length:5},(_,i)=>`<svg width="14" height="14" viewBox="0 0 24 24" fill="${i<filled?'var(--color-text-warning)':'var(--color-border-secondary)'}" style="display:block"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`).join('');
+}
+
+function next(){
+  if(curQ+1>=TOTAL){showResults();return;}
+  curQ++; show('fb-box',false); loadQ();
+}
+function reanswer(){show('fb-box',false);document.getElementById('ans').value='';document.getElementById('ans').focus();}
+function skip(){
+  qData.push({q:(questions[curQ]?.text||'Skipped').substring(0,60)+'...',sc:null});
+  if(curQ+1>=TOTAL){showResults();return;}
+  curQ++; show('fb-box',false); loadQ();
+}
+
+function showResults(){
+  document.getElementById('interview-panel').style.display='none';
+  document.getElementById('results-panel').style.display='block';
+  const valid=scores.filter(s=>s>0);
+  const avg=valid.length?(valid.reduce((a,b)=>a+b,0)/valid.length):0;
+  const best=valid.length?Math.max(...valid):0;
+  document.getElementById('final-score').textContent=avg.toFixed(1)+'/10';
+  document.getElementById('final-sub').textContent=avg>=8?'Excellent — you are interview ready!':avg>=6?'Good effort. A bit more practice and you will nail it.':'Keep going — every session makes you better.';
+  document.getElementById('s-answered').textContent=valid.length;
+  document.getElementById('s-avg').textContent=avg.toFixed(1);
+  document.getElementById('s-best').textContent=best;
+  document.getElementById('breakdown').innerHTML=qData.map(d=>{
+    const badge=d.sc===null?`<div class="bd-score s-skip">Skipped</div>`:`<div class="bd-score ${d.sc>=7?'s-high':d.sc>=5?'s-mid':'s-low'}">${d.sc}/10</div>`;
+    return `<div class="bd-item"><div class="bd-q">${d.q}</div>${badge}</div>`;
+  }).join('');
+}
+
+function restart(){
+  document.getElementById('results-panel').style.display='none';
+  document.getElementById('setup-panel').style.display='block';
+  questions=[]; curQ=0; scores=[]; qData=[];
+}
+
+async function callAPI(prompt,max){
+  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:max,messages:[{role:'user',content:prompt}]})});
+  const d=await r.json();
+  return d.content.map(i=>i.text||'').join('');
+}
+function parseJSON(raw){return JSON.parse(raw.replace(/```json|```/g,'').trim())}
+function show(id,vis){document.getElementById(id).style.display=vis?'block':'none'}
+</script>
